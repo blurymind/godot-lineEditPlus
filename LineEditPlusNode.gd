@@ -2,6 +2,8 @@ extends LineEdit
 
 export(String, "Numeric", "Any", "Regex") var inputType = "Numeric"
 export var regexLimitString = '[0-9]'
+
+export var limitRange = true
 export var minNum = 0
 export var maxNum = 100
 
@@ -18,7 +20,7 @@ func _ready():
 
 func updateInputType():
 	if inputType == "Numeric":
-		regexLimitString = '[0-9]'
+		regexLimitString = '[0-9-]'
 	elif inputType == "Any":
 		regexLimitString = ''
 	elif inputType == "Regex":
@@ -31,9 +33,8 @@ func _on_LineEdit_text_changed( text ):
 	if text.length() > maxCharacters and maxCharacters != 0 and inputType != "Numeric": # limit how many characters 
 		set_text(get_text().substr(0,get_text().length()-1))
 	
-	## if numeric: == todo- allow negative values
 	if inputType == "Numeric":##if numeric - use min and max
-		if maxNum != 0:
+		if limitRange == true:
 			var validateNumRange = clamp(int(get_text()),minNum,maxNum)
 			set_text(str(validateNumRange))
 			if get_text() == "0":
@@ -69,7 +70,7 @@ func _on_inputEvent(event):
 			set_text(str(int(get_text())-inputNumStep))
 			set_cursor_pos(0)
 #			print("decrease")
-		limitNumericInput()
+		if limitRange == true:limitNumericInput()
 
 func limitNumericInput():
 	if cycleNumInput == true:

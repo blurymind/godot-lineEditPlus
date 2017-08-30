@@ -8,14 +8,14 @@ export var minNum = 0
 export var maxNum = 100
 
 #export var maxCharacters = 0
-
 var tooltiptext = ""
-
+var startingTooltip = ''
 func _ready():
+	startingTooltip = get_tooltip()
 	connect("text_changed",self,"_on_LineEdit_text_changed")
 	connect("input_event",self,"_on_inputEvent")
 	updateInputType()
-	if limitRange == true: updateTooltip()
+	updateTooltip()
 
 
 func updateInputType():
@@ -30,22 +30,20 @@ func _on_LineEdit_text_changed( text ):
 	var cursorPos = get_cursor_pos()
 	if regexLimitString.length() > 0:## limit what characters
 		set_text(returnSpecificSymbolsOnly(text,regexLimitString))
-#	if text.length() > maxCharacters and maxCharacters != 0 and inputType != "Numeric": # limit how many characters 
-#		set_text(get_text().substr(0,get_text().length()-1))
 	
 	if inputType == "Numeric":##if numeric - use min and max
 		if limitRange == true:
-			var validateNumRange = clamp(int(get_text()),minNum,maxNum)
-			set_text(str(validateNumRange))
-			if get_text() == "0":
-				set_text("")
+			limitNumericInput()
 	set_cursor_pos(cursorPos)
 	updateTooltip()
 
 func updateTooltip():
 	if inputType == "Numeric":
-		tooltiptext = "Accepting only numeric values\n"
-		tooltiptext = tooltiptext+ "Between: " + str(minNum) + "-" + str(maxNum)
+		tooltiptext = "Hint: " + startingTooltip + "\nAccepting only numeric values\n"
+		if limitRange == true: tooltiptext = tooltiptext+ "Min: " + str(minNum) + "  Max: " + str(maxNum)
+		if inputActionIncreaseNum.length() !=0 and inputActionDecreaseNum.length() !=0:
+			tooltiptext = tooltiptext + "\nPress " + inputActionIncreaseNum + " to increase the value by "+str(inputNumStep)+".\nPress "+inputActionDecreaseNum+" to decrease the value by "+str(inputNumStep)+"."
+			if cycleNumInput==true:tooltiptext = tooltiptext + "\nInput can Cycle the value."
 	set_tooltip(tooltiptext)
 
 func returnSpecificSymbolsOnly(enteredText,regex):
@@ -73,13 +71,15 @@ func _on_inputEvent(event):
 		if limitRange == true:limitNumericInput()
 
 func limitNumericInput():
-	if cycleNumInput == true:
-		if int(get_text()) > maxNum:
-			set_text(str(0))
-		if int(get_text()) < minNum:
-			set_text(str(maxNum))
-	else:
-		if int(get_text()) > maxNum:
-			set_text(str(maxNum))
-		if int(get_text()) < minNum:
-			set_text(str(minNum))
+	if get_text().length() != 0:
+#		var validateNumRange = clamp(int(get_text()),minNum,maxNum)
+		if cycleNumInput == true:
+			if int(get_text()) > maxNum:
+				set_text(str(0))
+			if int(get_text()) < minNum:
+				set_text(str(maxNum))
+		else:
+			if int(get_text()) > maxNum and get_text().length() !=0:
+				set_text(str(maxNum))
+			if int(get_text()) < minNum and get_text().length() !=0:
+				set_text(str(minNum))

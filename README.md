@@ -5,7 +5,6 @@ Variables:
 - inputType -select between numeric, any or regex input. Determines what kind of input can be entered. Selecting numeric will force the input to be only numeric and will also  use the additional options provided for numeric input. Regex allows you to use a custom regexLimitString. For example '[0-9]' would limit it to numeric only. 
 - limitRange - Enabling this will force a numeric limit range for numeric input.
 - min/maxNum - Establish the minimum and maximum number for that range
-- maxCharacters - This limits the maximum number of characters that can be entered in the input box. If set to 0 = no limit
 - inputActionIncreaseNum - You can assign an input action that will trigger increasing the numeric value in the input box
 - inputActionDecreaseNum - You can assign an input action that will trigger decreasing the numeric value in the input box
 - inputNumStep - This variable determines by what amount the numeric value is increased or decreased by the input actions

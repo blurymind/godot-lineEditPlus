@@ -7,7 +7,7 @@ export var limitRange = true
 export var minNum = 0
 export var maxNum = 100
 
-export var maxCharacters = 0
+#export var maxCharacters = 0
 
 var tooltiptext = ""
 
@@ -15,7 +15,7 @@ func _ready():
 	connect("text_changed",self,"_on_LineEdit_text_changed")
 	connect("input_event",self,"_on_inputEvent")
 	updateInputType()
-	updateTooltip()
+	if limitRange == true: updateTooltip()
 
 
 func updateInputType():
@@ -30,8 +30,8 @@ func _on_LineEdit_text_changed( text ):
 	var cursorPos = get_cursor_pos()
 	if regexLimitString.length() > 0:## limit what characters
 		set_text(returnSpecificSymbolsOnly(text,regexLimitString))
-	if text.length() > maxCharacters and maxCharacters != 0 and inputType != "Numeric": # limit how many characters 
-		set_text(get_text().substr(0,get_text().length()-1))
+#	if text.length() > maxCharacters and maxCharacters != 0 and inputType != "Numeric": # limit how many characters 
+#		set_text(get_text().substr(0,get_text().length()-1))
 	
 	if inputType == "Numeric":##if numeric - use min and max
 		if limitRange == true:

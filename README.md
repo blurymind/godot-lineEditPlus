@@ -14,4 +14,4 @@ on Regex:
 - for example using [0-9] for the regexLimitString would allow only numbers to be entered
 - using [A-Za-z ] for the regexLimitString would allow only letters to be entered
 
-You can also limit how many characters can be entered via the maxCharacters int
+ 
